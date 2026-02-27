@@ -1,18 +1,22 @@
 {% extends 'base/base.html' %}
-{% block title %}
-    {% if object %}Editar mascota{% else %}Nueva mascota{% endif %} - Refugio Animal
-{% endblock %}
+{% block title %}Editar solicitud #{{ object.id }} - Refugio Animal{% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">
-                    {% if object %}Editar mascota: {{ object.nombre }}{% else %}Registrar nueva mascota{% endif %}
-                </h3>
+                <h3 class="panel-title">Editar solicitud #{{ object.id }}</h3>
             </div>
             <div class="panel-body">
+                <div class="alert alert-info">
+                    <strong>Solicitante:</strong> {{ object.persona }}
+                    {% if object.persona %}
+                    &nbsp;|&nbsp; <strong>Tel:</strong> {{ object.persona.telefono }}
+                    &nbsp;|&nbsp; <strong>Email:</strong> {{ object.persona.email }}
+                    {% endif %}
+                </div>
+
                 <form method="post">
                     {% csrf_token %}
                     {% for field in form %}
@@ -22,16 +26,11 @@
                         {% if field.errors %}
                             <span class="help-block">{{ field.errors|join:", " }}</span>
                         {% endif %}
-                        {% if field.help_text %}
-                            <span class="help-block">{{ field.help_text }}</span>
-                        {% endif %}
                     </div>
                     {% endfor %}
                     <hr>
-                    <button type="submit" class="btn btn-primary">
-                        {% if object %}Guardar cambios{% else %}Registrar{% endif %}
-                    </button>
-                    <a href="{% url 'mascota:mascota_listar' %}" class="btn btn-default">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <a href="{% url 'adopciones:solicitud_listar' %}" class="btn btn-default">Cancelar</a>
                 </form>
             </div>
         </div>

@@ -1,10 +1,47 @@
 {% extends 'base/base.html' %}
-{% block content %}
-    <form method="post"  class="form-group">
-    {% csrf_token %}
-        {{ form.as_p }}
-         {{ form2.as_p }}
-        <button type="submit" class="btn-default btn">enviar</button>
-    </form>
+{% block title %}Nueva solicitud de adopcion - Refugio Animal{% endblock %}
 
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Nueva solicitud de adopcion</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <h4>Datos del solicitante</h4>
+                    <hr>
+                    {% for field in form2 %}
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">{{ field.errors|join:", " }}</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <h4>Detalles de la solicitud</h4>
+                    <hr>
+                    {% for field in form %}
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">{{ field.errors|join:", " }}</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <hr>
+                    <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+                    <a href="{% url 'adopciones:solicitud_listar' %}" class="btn btn-default">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

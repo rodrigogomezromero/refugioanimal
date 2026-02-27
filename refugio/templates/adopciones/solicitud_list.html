@@ -1,45 +1,59 @@
 {% extends 'base/base.html' %}
-{% block title %}
-Lista de solicitudes
-{% endblock %}
+{% block title %}Solicitudes de adopcion - Refugio Animal{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <table class="table table-striped">
+<div class="row">
+    <div class="col-md-12">
+        <h2>Solicitudes de adopcion</h2>
+        <hr>
+        <a href="{% url 'adopciones:solicitud_crear' %}" class="btn btn-success btn-sm" style="margin-bottom:15px;">
+            + Nueva solicitud
+        </a>
+
+        <table class="table table-striped table-hover table-bordered">
             <thead>
                 <tr>
-                    <th>No. Solicitud</th>
+                    <th>#</th>
                     <th>Adoptante</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
                     <th>No. mascotas</th>
                     <th>Razones</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
             {% if object_list %}
-            {% for solicitud in object_list %}
+                {% for solicitud in object_list %}
                 <tr>
                     <td>{{ solicitud.id }}</td>
-                    <td>{{ solicitud.persona.nombre }} {{ solicitud.persona.apellidos }}</td>
+                    <td><strong>{{ solicitud.persona }}</strong></td>
+                    <td>{% if solicitud.persona %}{{ solicitud.persona.telefono }}{% endif %}</td>
+                    <td>{% if solicitud.persona %}{{ solicitud.persona.email }}{% endif %}</td>
                     <td>{{ solicitud.numero_mascotas }}</td>
-                    <td>{{ solicitud.razones }} {{ mascota.persona.apellidos }}</td>
+                    <td>{{ solicitud.razones|truncatechars:60 }}</td>
                     <td>
-                        <a class="btn btn-primary" href="#">Editar</a>
-                        <a class="btn btn-danger" href="#">Eliminar</a>
+                        <span class="label label-{{ solicitud.estado }}">
+                            {{ solicitud.get_estado_display }}
+                        </span>
+                    </td>
+                    <td>{{ solicitud.fecha_solicitud }}</td>
+                    <td>
+                        <a class="btn btn-primary btn-xs" href="{% url 'adopciones:solicitud_editar' solicitud.id %}">Editar</a>
+                        <a class="btn btn-danger btn-xs" href="{% url 'adopciones:solicitud_eliminar' solicitud.id %}">Eliminar</a>
                     </td>
                 </tr>
-            {% endfor %}
+                {% endfor %}
             {% else %}
-               <tr >
-                    <div class="alert ">
-                        <h2>No hay registros</h2>
-                    </div>
-
-               </tr>
+                <tr>
+                    <td colspan="9" class="text-center text-muted">
+                        <em>No hay solicitudes registradas todavia.</em>
+                    </td>
+                </tr>
             {% endif %}
             </tbody>
-
         </table>
     </div>
 </div>
