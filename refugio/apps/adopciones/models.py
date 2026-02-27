@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Persona(models.Model):
 
@@ -13,12 +11,30 @@ class Persona(models.Model):
     domicilio = models.TextField()
 
     def __str__(self):
-        return '{} {}'.format(self.nombre,self.apellidos)
+        return '{} {}'.format(self.nombre, self.apellidos)
 
+    class Meta:
+        verbose_name = 'Persona'
+        verbose_name_plural = 'Personas'
 
 
 class Solicitud(models.Model):
 
-    persona = models.ForeignKey(Persona, null=True, blank=True)
-    numero_mascotas  = models.IntegerField()
-    razones  =  models.TextField()
+    ESTADO_CHOICES = [
+        ('pendiente', 'Pendiente'),
+        ('aprobada', 'Aprobada'),
+        ('rechazada', 'Rechazada'),
+    ]
+
+    persona = models.ForeignKey(Persona, null=True, blank=True, on_delete=models.CASCADE)
+    numero_mascotas = models.IntegerField()
+    razones = models.TextField()
+    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='pendiente')
+    fecha_solicitud = models.DateField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return 'Solicitud #{} - {}'.format(self.id, self.persona)
+
+    class Meta:
+        verbose_name = 'Solicitud de adopción'
+        verbose_name_plural = 'Solicitudes de adopción'

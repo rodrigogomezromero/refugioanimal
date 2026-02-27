@@ -1,15 +1,14 @@
 from django.shortcuts import render
-
-# Create your views here.
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import ListView, CreateView
+from django.http import HttpResponseRedirect
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
 from apps.adopciones.models import Solicitud, Persona
-from apps.adopciones.forms import SolicitudForm, PersonaForm
+from apps.adopciones.forms import SolicitudForm, PersonaForm, SolicitudEstadoForm
 
 
 def index(request):
-    return HttpResponse('Index adopciones')
+    return HttpResponseRedirect(reverse_lazy('adopciones:solicitud_listar'))
 
 
 class SolicitudList(ListView):
@@ -33,7 +32,7 @@ class SolicitudCreate(CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object
+        self.object = None
         form = self.form_class(request.POST)
         form2 = self.second_form_class(request.POST)
 
@@ -46,4 +45,14 @@ class SolicitudCreate(CreateView):
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 
+class SolicitudUpdate(UpdateView):
+    model = Solicitud
+    template_name = 'adopciones/solicitud_update.html'
+    form_class = SolicitudEstadoForm
+    success_url = reverse_lazy('adopciones:solicitud_listar')
 
+
+class SolicitudDelete(DeleteView):
+    model = Solicitud
+    template_name = 'adopciones/solicitud_delete.html'
+    success_url = reverse_lazy('adopciones:solicitud_listar')
