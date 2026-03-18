@@ -1,13 +1,38 @@
 {% extends 'base/base.html' %}
-
-{% block title %} App mascota{% endblock %}
-
-
+{% block title %}Refugio Animal{% endblock %}
 
 {% block content %}
-    <h5>SOy el contendoo de mascota</h5>
-{% endblock %}
-
-{% block footer %}
-    <h5>Footer de  mascota</h5>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1>&#127968; Refugio Animal</h1>
+        <p class="lead">Sistema de gestion y adopcion de mascotas</p>
+        <hr>
+    </div>
+</div>
+<div class="row" style="margin-top: 30px;">
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Mascotas</h3>
+            </div>
+            <div class="panel-body">
+                <p>Gestiona el registro de animales rescatados en el refugio.</p>
+                <a href="/mascota/" class="btn btn-success">Ver mascotas</a>
+                <a href="/mascota/nuevo" class="btn btn-default">Registrar nueva</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Solicitudes de adopcion</h3>
+            </div>
+            <div class="panel-body">
+                <p>Revisa y gestiona las solicitudes de personas que desean adoptar.</p>
+                <a href="/adopcion/solicitudes/" class="btn btn-primary">Ver solicitudes</a>
+                <a href="/adopcion/solicitudes/nueva" class="btn btn-default">Nueva solicitud</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
